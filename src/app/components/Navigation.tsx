@@ -1,4 +1,18 @@
-import { AppBar, Toolbar, Typography, Button, Box, IconButton, Avatar, Menu, MenuItem } from '@mui/material';
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Button,
+  Box,
+  IconButton,
+  Avatar,
+  Menu,
+  MenuItem,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+} from '@mui/material';
 import { BookOpen, User, Upload, Home } from 'lucide-react';
 import { useState } from 'react';
 
@@ -9,6 +23,7 @@ interface NavigationProps {
 
 export function Navigation({ currentView, onNavigate }: NavigationProps) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [settingsOpen, setSettingsOpen] = useState(false);
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -16,6 +31,11 @@ export function Navigation({ currentView, onNavigate }: NavigationProps) {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleOpenSettings = () => {
+    setAnchorEl(null);
+    setSettingsOpen(true);
   };
 
   return (
@@ -61,11 +81,28 @@ export function Navigation({ currentView, onNavigate }: NavigationProps) {
             onClose={handleClose}
           >
             <MenuItem onClick={handleClose}>내 프로필</MenuItem>
-            <MenuItem onClick={handleClose}>설정</MenuItem>
+            <MenuItem onClick={handleOpenSettings}>설정</MenuItem>
             <MenuItem onClick={handleClose}>로그아웃</MenuItem>
           </Menu>
         </Box>
       </Toolbar>
+
+      <Dialog
+        open={settingsOpen}
+        onClose={() => setSettingsOpen(false)}
+        fullWidth
+        maxWidth="sm"
+      >
+        <DialogTitle>설정</DialogTitle>
+        <DialogContent dividers>
+          <Typography variant="body2" color="text.secondary">
+            (임시) 설정 화면입니다. 여기에 테마/알림/계정 등의 설정을 추가할 수 있어요.
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setSettingsOpen(false)}>닫기</Button>
+        </DialogActions>
+      </Dialog>
     </AppBar>
   );
 }
